@@ -1,0 +1,16 @@
+<?php if (count($this->posts) != 0): ?>
+<?php foreach ($this->posts as $post): ?>
+<?php if (!$post->hidden): ?>
+<div class="post">
+<p class="author"><?= $post->name ?> posted at <a href="index.php?id=<?= $post->id ?>"><?= $post->posted->format("r") ?></a>:</p>
+<blockquote class="content">
+  <?php if ($post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= $post->content ?><?php if ($post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
+  </blockquote>
+</div>
+<?php endif; ?>
+<?php endforeach; ?>
+<?php else: ?>
+<p>No posts in the database!</p>
+<?php endif; ?>
+<p class="pagination">
+<?php if ($this->page != 1): ?><a href="?page=1">Start</a><?php endif; ?> Page <?= $this->page ?> <a href="?page=<?= $this->page + 1 ?>">Next</a></p>

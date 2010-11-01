@@ -1,0 +1,10 @@
+<?php if ($this->post->hidden): ?>
+<p>This post is hidden.</p>
+<?php else: ?>
+<div class="post">
+<p class="author"><?= $this->post->name ?> posted at <?= $this->post->posted->format("r") ?>:</p>
+<blockquote class="content">
+  <?php if ($this->post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= $this->post->content ?><?php if ($this->post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
+  </blockquote>
+</div>
+<?php endif; ?>

@@ -1,0 +1,94 @@
+html {
+    background: #ccc;
+    font: 12pt Arial;
+}
+
+body {
+    background: #fff;
+    -webkit-box-shadow: 0 0 10px #aaa;
+    border: 1px solid #555;
+    border-radius: 10px;
+    margin: 50px;
+    padding: 20px;
+}
+
+h1 {
+    border-bottom: 1px solid #aaa;
+    font-size: 1.50em;
+    margin-bottom: 10px;
+}
+
+h1:after {
+    color: #888;
+    content: " - wallr";
+}
+
+h2 {
+    font-size: 1.30em;
+    line-height: 1.50em;
+}
+
+label {
+    border-bottom: 1px dotted #888;
+    clear: both;
+    cursor: pointer;
+    display: block;
+    margin: 5px 0;
+}
+
+blockquote.content {
+    background: #eee;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+}
+
+input, textarea {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    display: block;
+    font-size: 1.20em;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+input:hover {
+    border-color: #888;
+}
+
+input[type="button"], input[type="submit"] {
+    background: #eee;
+    cursor: pointer;
+    margin: 10px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    background: #ddd;
+}
+
+input[type="checkbox"] {
+    display: inline-block;
+    float: right;
+}
+
+#content {
+    float: left;
+    width: 70%;
+}
+
+#sidebar {
+    float: left;
+    width: 30%;
+}
+
+#footer {
+    clear: both;
+    font-size: 0.80em;
+    margin: 40px 0 0 0;
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}

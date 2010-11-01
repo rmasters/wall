@@ -1,0 +1,9 @@
+Wall is a simple PHP script for anonymous posting. Future ideas include:
+
+* a better UI (ajax powered),
+* embedding (#newtwitter style)
+
+To install upload everything, disallow access to includes and run install.php.
+Remove install.php afterwards.
+
+Requires PHP 5.2 and sqlite
