@@ -17,15 +17,16 @@ if (isset($_GET["id"]) && (int) $_GET["id"] > 0) {
     $view = new Template(TPL . "/list.phtml");
     
     $count = 10;
-    $start = 0;
+    $offset = 0;
     $page = isset($_GET["page"]) ? (int) $_GET["page"] - 1 : 1;
     if ($page >= 1) {
-        $start = $count * $page;
+        $offset = $count * ($page - 1);
     }
-    
-    $posts = Post::fetchAllWithin($start, $count);
+
+    $posts = Post::fetchAllWithin($offset, $count);
     $view->posts = $posts;
-    $view->page = $page + 1;
+    $view->perPage = $count;
+    $view->page = $page;
     $layout->title = "All posts";
 }
 

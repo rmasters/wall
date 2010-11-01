@@ -13,4 +13,4 @@
 <p>No posts in the database!</p>
 <?php endif; ?>
 <p class="pagination">
-<?php if ($this->page != 1): ?><a href="?page=1">Start</a><?php endif; ?> Page <?= $this->page ?> <a href="?page=<?= $this->page + 1 ?>">Next</a></p>
+<?php if ($this->page != 1): ?><a href="?page=1">Start</a><?php endif; ?> Page <?= $this->page ?> <?php if (count($this->posts) == $this->perPage): ?><a href="?page=<?= $this->page + 1 ?>">Next</a><?php endif; ?></p>

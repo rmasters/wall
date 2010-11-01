@@ -3,12 +3,12 @@
  * Bootstrapper
  */
 
-define("DIR", dirname(__FILE__) . "/../");
-define("INC", DIR . "/includes/");
-define("TPL", INC . "/html/");
+define("DIR", realpath(dirname(__FILE__) . "/.."));
+define("INC", DIR . "/includes");
+define("TPL", INC . "/html");
 
 function __autoload($name) {
-    $path = INC . str_replace(array("_", "\\"), "/", $name) . ".php";
+    $path = INC . "/" . str_replace(array("_", "\\"), "/", $name) . ".php";
     require $path;
 }
 

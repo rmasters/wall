@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
         
         $post->save();
        
-        redirect("/index.php?id={$post->id}");
+        redirect("index.php?id={$post->id}");
     } catch (UserException $e) {
         $view = new Template(TPL . "/error.phtml");
         $view->message = $e->getMessage();

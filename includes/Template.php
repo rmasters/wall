@@ -30,6 +30,9 @@ class Template
         require $this->path;
         $this->contents = ob_get_contents();
         ob_clean();
+        if (empty($this->contents)) {
+            return "";
+        }
         return $this->contents;
     }
 }

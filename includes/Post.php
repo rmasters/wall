@@ -172,12 +172,12 @@ class Post extends Model
         return $models;
     }
     
-    public static function fetchAllWithin($startId, $count) {
+    public static function fetchAllWithin($offset, $count) {
         $models = array();
         $db = self::getDb();
         
-        $stmt = $db->prepare("SELECT * FROM posts WHERE hidden = 0 ORDER BY posted DESC LIMIT :start, :count");
-        $stmt->execute(array("start" => $startId, "count" => $count));
+        $stmt = $db->prepare("SELECT * FROM posts WHERE hidden = 0 ORDER BY posted DESC LIMIT :count OFFSET :offset");
+        $stmt->execute(array("offset" => $offset, "count" => $count));
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $models[] = new self($row);
         }

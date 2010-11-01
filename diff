@@ -1,0 +1,131 @@
+diff --git a/includes/Post.php b/includes/Post.php
+index 9acf9d8..793961d 100644
+--- a/includes/Post.php
++++ b/includes/Post.php
+@@ -172,12 +172,12 @@ class Post extends Model
+         return $models;
+     }
+     
+-    public static function fetchAllWithin($startId, $count) {
++    public static function fetchAllWithin($offset, $count) {
+         $models = array();
+         $db = self::getDb();
+         
+-        $stmt = $db->prepare("SELECT * FROM posts WHERE hidden = 0 ORDER BY posted DESC LIMIT :start, :count");
+-        $stmt->execute(array("start" => $startId, "count" => $count));
++        $stmt = $db->prepare("SELECT * FROM posts WHERE hidden = 0 ORDER BY posted DESC LIMIT :count OFFSET :offset");
++        $stmt->execute(array("offset" => $offset, "count" => $count));
+         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+             $models[] = new self($row);
+         }
+diff --git a/includes/Template.php b/includes/Template.php
+index 4f3851b..3fdbe5e 100644
+--- a/includes/Template.php
++++ b/includes/Template.php
+@@ -30,6 +30,9 @@ class Template
+         require $this->path;
+         $this->contents = ob_get_contents();
+         ob_clean();
++        if (empty($this->contents)) {
++            return "";
++        }
+         return $this->contents;
+     }
+ }
+diff --git a/includes/bootstrap.php b/includes/bootstrap.php
+index 1ea0596..81b1f26 100644
+--- a/includes/bootstrap.php
++++ b/includes/bootstrap.php
+@@ -3,12 +3,12 @@
+  * Bootstrapper
+  */
+ 
+-define("DIR", dirname(__FILE__) . "/../");
+-define("INC", DIR . "/includes/");
+-define("TPL", INC . "/html/");
++define("DIR", realpath(dirname(__FILE__) . "/.."));
++define("INC", DIR . "/includes");
++define("TPL", INC . "/html");
+ 
+ function __autoload($name) {
+-    $path = INC . str_replace(array("_", "\\"), "/", $name) . ".php";
++    $path = INC . "/" . str_replace(array("_", "\\"), "/", $name) . ".php";
+     require $path;
+ }
+ 
+diff --git a/includes/data/testing.db b/includes/data/testing.db
+index 1e0ecd2..c7c4693 100755
+Binary files a/includes/data/testing.db and b/includes/data/testing.db differ
+diff --git a/includes/html/layout.phtml b/includes/html/layout.phtml
+index fa67765..2a340ce 100644
+--- a/includes/html/layout.phtml
++++ b/includes/html/layout.phtml
+@@ -3,7 +3,7 @@
+ <head>
+   <title><?= $this->title ?></title>
+   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.2.0/build/cssreset/reset-min.css">
+-  <link rel="stylesheet" type="text/css" href="/styles/base.css">
++  <link rel="stylesheet" type="text/css" href="styles/base.css">
+ </head>
+ <body>
+   <h1><?= $this->title ?></h1>
+diff --git a/includes/html/list.phtml b/includes/html/list.phtml
+index 0951af7..37611f7 100644
+--- a/includes/html/list.phtml
++++ b/includes/html/list.phtml
+@@ -13,4 +13,4 @@
+ <p>No posts in the database!</p>
+ <?php endif; ?>
+ <p class="pagination">
+-<?php if ($this->page != 1): ?><a href="?page=1">Start</a><?php endif; ?> Page <?= $this->page ?> <a href="?page=<?= $this->page + 1 ?>">Next</a></p>
++<?php if ($this->page != 1): ?><a href="?page=1">Start</a><?php endif; ?> Page <?= $this->page ?> <?php if (count($this->posts) == $this->perPage): ?><a href="?page=<?= $this->page + 1 ?>">Next</a><?php endif; ?></p>
+diff --git a/includes/html/submit.phtml b/includes/html/submit.phtml
+index af2b1d3..be3fd89 100644
+--- a/includes/html/submit.phtml
++++ b/includes/html/submit.phtml
+@@ -1,5 +1,5 @@
+ <h2>Submit a post</h2>
+-<form action="/submit.php" method="post">
++<form action="submit.php" method="post">
+   <p><label for="name">Your name (optional)</label><input type="text" name="name" id="name"></p>
+   <p><label for="content">Post content</label><textarea name="content" id="content"></textarea></p>
+   <p><label for="preformatted">This is code or ASCii art<input type="checkbox" name="preformatted" id="preformatted"></label></p>
+diff --git a/index.php b/index.php
+index 0a4f0cb..19f413b 100644
+--- a/index.php
++++ b/index.php
+@@ -17,15 +17,16 @@ if (isset($_GET["id"]) && (int) $_GET["id"] > 0) {
+     $view = new Template(TPL . "/list.phtml");
+     
+     $count = 10;
+-    $start = 0;
++    $offset = 0;
+     $page = isset($_GET["page"]) ? (int) $_GET["page"] - 1 : 1;
+     if ($page >= 1) {
+-        $start = $count * $page;
++        $offset = $count * ($page - 1);
+     }
+-    
+-    $posts = Post::fetchAllWithin($start, $count);
++
++    $posts = Post::fetchAllWithin($offset, $count);
+     $view->posts = $posts;
+-    $view->page = $page + 1;
++    $view->perPage = $count;
++    $view->page = $page;
+     $layout->title = "All posts";
+ }
+ 
+diff --git a/submit.php b/submit.php
+index d6182e8..9cfe5ad 100644
+--- a/submit.php
++++ b/submit.php
+@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
+         
+         $post->save();
+        
+-        redirect("/index.php?id={$post->id}");
++        redirect("index.php?id={$post->id}");
+     } catch (UserException $e) {
+         $view = new Template(TPL . "/error.phtml");
+         $view->message = $e->getMessage();
