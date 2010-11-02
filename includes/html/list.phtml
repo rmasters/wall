@@ -2,9 +2,9 @@
 <?php foreach ($this->posts as $post): ?>
 <?php if (!$post->hidden): ?>
 <div class="post">
-<p class="author"><?= $post->name ?> posted at <a href="index.php?id=<?= $post->id ?>"><?= $post->posted->format("r") ?></a>:</p>
+<p class="author"><?= $post->name ?> posted <a href="index.php?id=<?= $post->id ?>" title="<?= $post->posted->format("r") ?>"><?= humanTime($post->posted) ?></a>:</p>
 <blockquote class="content">
-  <?php if ($post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= $post->content ?><?php if ($post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
+  <?php if ($post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= formatMessage($post->content) ?><?php if ($post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
   </blockquote>
 </div>
 <?php endif; ?>

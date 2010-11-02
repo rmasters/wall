@@ -11,6 +11,8 @@ date_default_timezone_set("Europe/London");
 session_start();
 ob_start();
 
+require INC . "/helpers.php";
+
 function __autoload($name) {
     $path = INC . "/" . str_replace(array("_", "\\"), "/", $name) . ".php";
     require $path;
