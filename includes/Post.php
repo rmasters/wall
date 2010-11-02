@@ -58,16 +58,16 @@ class Post extends Model
     
     public function getPosted() {
         if ($this->posted == null) {
-            $this->posted = new DateTime;
+            $this->posted = time();
         }
         return $this->posted;
     }
     
     public function setPosted($posted) {
-        if (!$posted instanceof DateTime) {
-            $posted = new DateTime($posted);
+        if (is_string($posted)) {
+            $posted = strtotime($posted);
         }
-        $this->posted = $posted;
+        $this->posted = (int) $posted;
     }
     
     public function getHidden() {
@@ -111,7 +111,7 @@ class Post extends Model
             "id" => $this->getId(),
             "name" => $this->getName(),
             "content" => $this->getContentRaw(),
-           "posted" => $this->getPosted()->format("Y-m-d H:i:s"),
+           "posted" => date("Y-m-d H:i:s", $this->getPosted()),
             "hidden" => (int) $this->getHidden(),
             "preformatted" => (int) $this->getPreformatted()
         );

@@ -2,7 +2,7 @@
 <p>This post is hidden.</p>
 <?php else: ?>
 <div class="post">
-<p class="author"><?= $this->post->name ?> posted <a href="index.php?id=<?= $this->post->id ?>" title="<?= $this->post->posted->format("r") ?>"><?= humanTime($this->post->posted) ?></a>:</p>
+<p class="author"><?= $this->post->name ?> posted <a href="index.php?id=<?= $this->post->id ?>" title="<?= date("r", $post->posted) ?>"><?= humanTime($this->post->posted) ?></a>:</p>
 <blockquote class="content">
   <?php if ($this->post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= formatMessage($this->post->content) ?><?php if ($this->post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
   </blockquote>

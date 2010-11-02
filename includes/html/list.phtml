@@ -1,13 +1,11 @@
 <?php if (count($this->posts) != 0): ?>
 <?php foreach ($this->posts as $post): ?>
-<?php if (!$post->hidden): ?>
 <div class="post">
-<p class="author"><?= $post->name ?> posted <a href="index.php?id=<?= $post->id ?>" title="<?= $post->posted->format("r") ?>"><?= humanTime($post->posted) ?></a>:</p>
+<p class="author"><?= $post->name ?> posted <a href="index.php?id=<?= $post->id ?>" title="<?= date("r", $post->posted) ?>"><?= humanTime($post->posted) ?></a>:</p>
 <blockquote class="content">
   <?php if ($post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= formatMessage($post->content) ?><?php if ($post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
   </blockquote>
 </div>
-<?php endif; ?>
 <?php endforeach; ?>
 <?php else: ?>
 <p>No posts in the database!</p>
