@@ -8,6 +8,8 @@ define("INC", DIR . "/includes");
 define("TPL", INC . "/html");
 
 date_default_timezone_set("Europe/London");
+session_start();
+ob_start();
 
 function __autoload($name) {
     $path = INC . "/" . str_replace(array("_", "\\"), "/", $name) . ".php";

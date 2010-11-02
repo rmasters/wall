@@ -9,6 +9,19 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
         if (!isset($_POST["name"], $_POST["content"])) {
             throw new UserException("All fields must be submitted.");
         }
+        
+        if (!isset($_SESSION["last_posted"])) {
+            $_SESSION["last_posted"] = new DateTime("now");
+        } else {
+            $now = new DateTime;
+            $interval = $now->diff($_SESSION["last_posted"]);
+            if ($interval->s < 20) {
+                $remaining = 20 - $interval->s;
+                throw new UserException("Please wait $remaining more seconds before posting again.");
+            } else {
+                $_SESSION["last_posted"] = $now;
+            }
+        }
 
         $post = new Post;
         $post->name = $_POST["name"];
