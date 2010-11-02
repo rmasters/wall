@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
                 $remaining = 20 - $interval;
                 throw new UserException("Please wait $remaining more seconds before posting again.");
             } else {
-                $_SESSION["last_posted"] = $now;
+                $_SESSION["last_posted"] = time();
             }
         }
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
         $post->preformatted = (isset($_POST["preformatted"]) && $_POST["preformatted"] == "on") ? true : false;
         
         $post->save();
-       
+
         redirect("index.php?id={$post->id}");
     } catch (UserException $e) {
         $view = new Template(TPL . "/error.phtml");
