@@ -1,7 +1,7 @@
 <?php if (count($this->posts) != 0): ?>
 <?php foreach ($this->posts as $post): ?>
 <div class="post">
-<p class="author"><?= $post->name ?> posted <a href="index.php?id=<?= $post->id ?>" title="<?= date("r", $post->posted) ?>"><?= humanTime($post->posted) ?></a>:</p>
+<p class="author"><?= convertTwitterUsernames($post->name) ?> posted <a href="index.php?id=<?= $post->id ?>" title="<?= date("r", $post->posted) ?>"><?= humanTime($post->posted) ?></a>:</p>
 <blockquote class="content">
   <?php if ($post->preformatted): ?><pre><?php else: ?><p><?php endif; ?><?= formatMessage($post->content) ?><?php if ($post->preformatted): ?></pre><?php else: ?></p><?php endif; ?>
   </blockquote>

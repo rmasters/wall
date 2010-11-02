@@ -4,5 +4,5 @@ GUI for managing
 Flood control (post (done), comment, flag)
 Better installer (options to just truncate the table, build the database completely, etc.)
 Finish browser tracking
-Embedded things - links, youtube etc.
+Embedded things - youtube etc.
 Populate form with previous values if posting failed.

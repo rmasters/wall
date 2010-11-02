@@ -38,8 +38,16 @@ function formatMessage($input) {
     
     // convert hyperlinks
     // regex source: http://stackoverflow.com/questions/1960461/convert-plain-text-hyperlinks-into-html-hyperlinks-in-php/3525863#3525863
-    $pattern = "@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@";
+    $pattern = "~(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)~";
     $input = preg_replace($pattern, "<a href=\"$1\" target=\"_blank\">$1</a>", $input);
     
+    // convert twitter links
+    $input = convertTwitterUsernames($input);
+    
     return $input;
+}
+
+function convertTwitterUsernames($input) {
+    $pattern = "~\B@([a-zA-Z0-9_]{1,15})~";
+    return preg_replace($pattern, "@<a href=\"http://twitter.com/$1\">$1</a>", $input);
 }
