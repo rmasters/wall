@@ -11,12 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
         }
         
         if (!isset($_SESSION["last_posted"])) {
-            $_SESSION["last_posted"] = new DateTime("now");
+            $_SESSION["last_posted"] = time();
         } else {
-            $now = new DateTime;
-            $interval = $now->diff($_SESSION["last_posted"]);
-            if ($interval->s < 20) {
-                $remaining = 20 - $interval->s;
+            $interval = time() - $_SESSION["last_posted"];
+            if ($interval < 20) {
+                $remaining = 20 - $interval;
                 throw new UserException("Please wait $remaining more seconds before posting again.");
             } else {
                 $_SESSION["last_posted"] = $now;
